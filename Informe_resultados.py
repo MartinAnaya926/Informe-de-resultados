@@ -36,7 +36,7 @@ datos_encabezado = {"Proyecto":["D9","I7",""],"Centro_costos":["D10","I9",""],"N
 datos_parametros = {"Departamento":["H","A",""],"Municipio":["I","B",""],"Fecha":["M","F",""],"Hora":["N","G",""],"Codigo_punto":["O","E",""],"Nombre_fuente":["R","C",""]}
 datos_parametros_2 = {"pH":["AL","K",""],"Temperatura":["AM","K",""],"OD":["AP","K",""],"Conductividad_E":["AV","K",""],"Caudal":["BG","K",""]}
 
-nombre = "\Informe_llenado_"
+nombre = "\Informe_llenado"
 
 # Crear copia del archivo original
 libro_modificado = load_workbook(ruta_formato_original)
@@ -58,11 +58,13 @@ for dato in range(len(datos_encabezado)):
 
     if valor is not None:
         datos_encabezado[key][2] = valor
-
     else:                
         valor = hoja_fuente_1[celda].value
         datos_encabezado[key][2] = valor
 
+    if key == "Numero_solicitud":
+        datos_encabezado[key][2] = valor+" - 1"
+        
     hoja_modificada[datos_encabezado[key][1]] = datos_encabezado[key][2]
 
 a = 19
@@ -93,25 +95,27 @@ ruta_ultima = ruta_formato_modificado+nombre+".xlsx"
 libro_modificado.save(ruta_ultima)
 libro_modificado.close()
 
-if 6 < filas_llenas <= 11:
-    print ("C1")
+##############################################################---PARA LA SEGUNDA HOJA---#######################################################################
+if 6 < filas_llenas:
+    
     libro_modificado_2 = load_workbook(ruta_ultima)
     nombre_hoja_modificada_2 = 'Parte 2'
     hoja_modificada_2 = libro_modificado_2.get_sheet_by_name(nombre_hoja_modificada_2)
-    
 
     for dato in range(len(datos_encabezado)):
-        print("C2")
+        
         key = lista_keys[dato]                              #Definir cada una de las claves, posición dato de la lista lista_keys
         celda = datos_encabezado[key][0]                    #Obtener la posición de la celda y cocnatenar con el número de la fila
         valor = hoja_fuente_2[celda].value
 
         if valor is not None:
             datos_encabezado[key][2] = valor
-            print("C3")
         else:                
             valor = hoja_fuente_1[celda].value
             datos_encabezado[key][2] = valor
+
+        if key == "Numero_solicitud":
+            datos_encabezado[key][2] = valor+" - 2"
 
         hoja_modificada_2[datos_encabezado[key][1]] = datos_encabezado[key][2]
 
@@ -119,9 +123,9 @@ if 6 < filas_llenas <= 11:
     b = 19
     
     for fila in range(7,12):
-        print("C4")
+
         for dato in range(len(datos_parametros)):
-            print("C5")
+        
             key = lista_keys_2[dato]
             celda_2 = datos_parametros[key][0]+str(fila)
             valor = hoja_fuente_1[celda_2].value
@@ -129,7 +133,7 @@ if 6 < filas_llenas <= 11:
             hoja_modificada_2[datos_parametros[key][1] + str(a)] = valor
 
         for dato in range(len(datos_parametros_2)):
-            print("C6")
+        
             key = lista_keys_3[dato]
             celda_3 = datos_parametros_2[key][0]+str(fila)
             valor = hoja_fuente_1[celda_3].value
@@ -139,8 +143,60 @@ if 6 < filas_llenas <= 11:
             b = b + 1
         a = a + 5
 
-    ruta_ultima_2 = ruta_formato_modificado+nombre+"2.xlsx"            
+    ruta_ultima_2 = ruta_formato_modificado+nombre+".xlsx"            
     libro_modificado_2.save(ruta_ultima_2)
     libro_modificado_2.close()    
+
+##############################################################---PARA LA TERCERA HOJA---#######################################################################
+if 11 < filas_llenas:
+    
+    libro_modificado_3 = load_workbook(ruta_ultima)
+    nombre_hoja_modificada_3 = 'Parte 3'
+    hoja_modificada_3 = libro_modificado_3.get_sheet_by_name(nombre_hoja_modificada_3)
+
+    for dato in range(len(datos_encabezado)):
+        
+        key = lista_keys[dato]                              #Definir cada una de las claves, posición dato de la lista lista_keys
+        celda = datos_encabezado[key][0]                    #Obtener la posición de la celda y cocnatenar con el número de la fila
+        valor = hoja_fuente_2[celda].value
+
+        if valor is not None:
+            datos_encabezado[key][2] = valor
+        else:                
+            valor = hoja_fuente_1[celda].value
+            datos_encabezado[key][2] = valor
+
+        if key == "Numero_solicitud":
+            datos_encabezado[key][2] = valor+" - 3"
+
+        hoja_modificada_3[datos_encabezado[key][1]] = datos_encabezado[key][2]
+
+    a = 19
+    b = 19
+    
+    for fila in range(12,17):
+
+        for dato in range(len(datos_parametros)):
+        
+            key = lista_keys_2[dato]
+            celda_2 = datos_parametros[key][0]+str(fila)
+            valor = hoja_fuente_1[celda_2].value
+            datos_parametros[key][2] = valor
+            hoja_modificada_3[datos_parametros[key][1] + str(a)] = valor
+
+        for dato in range(len(datos_parametros_2)):
+        
+            key = lista_keys_3[dato]
+            celda_3 = datos_parametros_2[key][0]+str(fila)
+            valor = hoja_fuente_1[celda_3].value
+            datos_parametros_2[key][2] = valor
+            hoja_modificada_3[datos_parametros_2[key][1] + str(b)] = valor
+
+            b = b + 1
+        a = a + 5
+
+    ruta_ultima_3 = ruta_formato_modificado+nombre+".xlsx"            
+    libro_modificado_3.save(ruta_ultima_3)
+    libro_modificado_3.close() 
 
 libro_original.close()    
