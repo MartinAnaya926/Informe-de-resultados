@@ -23,7 +23,6 @@ hoja_fuente_2 = libro_fuente_2.active
 
 #Contador para el número de filas llenas
 filas_llenas = 0
-
 #Iteración sobre las y conteo de las filas llenas
 for fila in hoja_fuente_1.iter_rows():
     if not all(cell is None for cell in fila):
@@ -34,7 +33,8 @@ print("Desde el número 2 hasta el número", filas_llenas)
 print()
 
 datos_encabezado = {"Proyecto":["D9","I7",""],"Centro_costos":["D10","I9",""],"Numero_solicitud":["G4","H3",""],"Plan_muestreo":["G4","I10",""],"Cliente":["D7","C7",""],"NIT_CC":["D8","C9",""],"Direccion":["D11","C10",""],"Contacto":["D12","C11",""],"Telefono":["D13","C13",""],"Correo":["D14","C14",""],"Responsable_1":["K2","I11",""],"Responsable_2":["L2","I12",""]}
-datos_parametros = {"Departamento":["H","A19",""],"Municipio":["I","B19",""],"Fecha":["M","F19",""],"Hora":["N","G19",""],"Codigo_punto":["O","E19",""],"Nombre_fuente":["R","C19",""],"pH":["AL","K19",""],"Temperatura":["AM","K20",""],"OD":["AP","K22",""],"Conductividad_E":["AV","K21",""],"Caudal":["BG","K23",""]}
+datos_parametros = {"Departamento":["H","A",""],"Municipio":["I","B",""],"Fecha":["M","F",""],"Hora":["N","G",""],"Codigo_punto":["O","E",""],"Nombre_fuente":["R","C",""]}
+datos_parametros_2 = {"pH":["AL","K",""],"Temperatura":["AM","K",""],"OD":["AP","K",""],"Conductividad_E":["AV","K",""],"Caudal":["BG","K",""]}
 
 nombre = "\Informe_llenado"
 
@@ -44,37 +44,47 @@ libro_modificado = load_workbook(ruta_formato_original)
 hoja_modificada = libro_modificado.active 
 
 lista_keys = list(datos_encabezado.keys())
-lista_keys_2 = list(datos_parametros.keys())              #Extraer una lista con las "claves" del diccionario
+lista_keys_2 = list(datos_parametros.keys())
+lista_keys_3 = list(datos_parametros_2.keys())              #Extraer una lista con las "claves" del diccionario
 
 for dato in range(len(datos_encabezado)):
     
     key = lista_keys[dato]                              #Definir cada una de las claves, posición dato de la lista lista_keys
-    pos_celda = datos_encabezado[key][0]                #Obtener la posición de la celda y cocnatenar con el número de la fila
-    valor = hoja_fuente_2[pos_celda].value
+    celda = datos_encabezado[key][0]                    #Obtener la posición de la celda y cocnatenar con el número de la fila
+    valor = hoja_fuente_2[celda].value
 
     if valor is not None:
         datos_encabezado[key][2] = valor
 
     else:                
-        valor = hoja_fuente_1[pos_celda].value
+        valor = hoja_fuente_1[celda].value
         datos_encabezado[key][2] = valor
-            
-    print(datos_encabezado[key])
 
     hoja_modificada[datos_encabezado[key][1]] = datos_encabezado[key][2]
 
-print()
+a = 19
+b = 19
+
 for fila in range(2,filas_llenas + 1):
+    
     for dato in range(len(datos_parametros)):
 
         key = lista_keys_2[dato]
-        celda = datos_parametros[key][0]+str(fila)
-        valor = hoja_fuente_1[celda].value
+        celda_2 = datos_parametros[key][0]+str(fila)
+        valor = hoja_fuente_1[celda_2].value
         datos_parametros[key][2] = valor
+        hoja_modificada[datos_parametros[key][1] + str(a)] = valor
 
-        print (datos_parametros[key])
-        hoja_modificada[datos_parametros[key][1]] = datos_parametros[key][2]
-    print()
+    for dato in range(len(datos_parametros_2)):
+            
+        key = lista_keys_3[dato]
+        celda_3 = datos_parametros_2[key][0]+str(fila)
+        valor = hoja_fuente_1[celda_3].value
+        datos_parametros_2[key][2] = valor
+        hoja_modificada[datos_parametros_2[key][1] + str(b)] = valor
+
+        b = b + 1
+    a = a + 5
 
 ruta_ultima = ruta_formato_modificado+nombre+".xlsx"            
 libro_modificado.save(ruta_ultima)
