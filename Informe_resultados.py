@@ -34,7 +34,7 @@ print("Desde el número 2 hasta el número", filas_llenas)
 print()
 
 datos_encabezado = {"Proyecto":["D9","I7",""],"Centro_costos":["D10","I9",""],"Numero_solicitud":["G4","H3",""],"Plan_muestreo":["G4","I10",""],"Cliente":["D7","C7",""],"NIT_CC":["D8","C9",""],"Direccion":["D11","C10",""],"Contacto":["D12","C11",""],"Telefono":["D13","C13",""],"Correo":["D14","C14",""],"Responsable_1":["K2","I11",""],"Responsable_2":["L2","I12",""]}
-#print(len(datos_encabezado))
+datos_parametros = {"Departamento":["H","A19",""],"Municipio":["I","B19",""],"Fecha":["M","F19",""],"Hora":["N","G19",""],"Codigo_punto":["O","E19",""],"Nombre_fuente":["R","C19",""],"pH":["AL","K19",""],"Temperatura":["AM","K20",""],"OD":["AP","K22",""],"Conductividad_E":["AV","K21",""],"Caudal":["BG","K23",""]}
 
 nombre = "\Informe_llenado"
 
@@ -43,7 +43,8 @@ libro_modificado = load_workbook(ruta_formato_original)
 # Modificar copia del archivo original
 hoja_modificada = libro_modificado.active 
 
-lista_keys = list(datos_encabezado.keys())              #Extraer una lista con las "claves" del diccionario
+lista_keys = list(datos_encabezado.keys())
+lista_keys_2 = list(datos_parametros.keys())              #Extraer una lista con las "claves" del diccionario
 
 for dato in range(len(datos_encabezado)):
     
@@ -61,7 +62,20 @@ for dato in range(len(datos_encabezado)):
     print(datos_encabezado[key])
 
     hoja_modificada[datos_encabezado[key][1]] = datos_encabezado[key][2]
-        
+
+print()
+for fila in range(2,filas_llenas + 1):
+    for dato in range(len(datos_parametros)):
+
+        key = lista_keys_2[dato]
+        celda = datos_parametros[key][0]+str(fila)
+        valor = hoja_fuente_1[celda].value
+        datos_parametros[key][2] = valor
+
+        print (datos_parametros[key])
+        hoja_modificada[datos_parametros[key][1]] = datos_parametros[key][2]
+    print()
+
 ruta_ultima = ruta_formato_modificado+nombre+".xlsx"            
 libro_modificado.save(ruta_ultima)
 libro_modificado.close()
