@@ -199,4 +199,56 @@ if 11 < filas_llenas:
     libro_modificado_3.save(ruta_ultima_3)
     libro_modificado_3.close() 
 
+##############################################################---PARA LA CUARTA HOJA---#######################################################################
+if 16 < filas_llenas:
+    
+    libro_modificado_4 = load_workbook(ruta_ultima)
+    nombre_hoja_modificada_4 = 'Parte 4'
+    hoja_modificada_4 = libro_modificado_4.get_sheet_by_name(nombre_hoja_modificada_4)
+
+    for dato in range(len(datos_encabezado)):
+        
+        key = lista_keys[dato]                              #Definir cada una de las claves, posición dato de la lista lista_keys
+        celda = datos_encabezado[key][0]                    #Obtener la posición de la celda y cocnatenar con el número de la fila
+        valor = hoja_fuente_2[celda].value
+
+        if valor is not None:
+            datos_encabezado[key][2] = valor
+        else:                
+            valor = hoja_fuente_1[celda].value
+            datos_encabezado[key][2] = valor
+
+        if key == "Numero_solicitud":
+            datos_encabezado[key][2] = valor+" - 4"
+
+        hoja_modificada_4[datos_encabezado[key][1]] = datos_encabezado[key][2]
+
+    a = 19
+    b = 19
+    
+    for fila in range(17,22):
+
+        for dato in range(len(datos_parametros)):
+        
+            key = lista_keys_2[dato]
+            celda_2 = datos_parametros[key][0]+str(fila)
+            valor = hoja_fuente_1[celda_2].value
+            datos_parametros[key][2] = valor
+            hoja_modificada_4[datos_parametros[key][1] + str(a)] = valor
+
+        for dato in range(len(datos_parametros_2)):
+        
+            key = lista_keys_3[dato]
+            celda_3 = datos_parametros_2[key][0]+str(fila)
+            valor = hoja_fuente_1[celda_3].value
+            datos_parametros_2[key][2] = valor
+            hoja_modificada_4[datos_parametros_2[key][1] + str(b)] = valor
+
+            b = b + 1
+        a = a + 5
+
+    ruta_ultima_4 = ruta_formato_modificado+nombre+".xlsx"            
+    libro_modificado_4.save(ruta_ultima_4)
+    libro_modificado_4.close()
+
 libro_original.close()    
