@@ -15,12 +15,10 @@ libro_original = load_workbook(ruta_formato_original)
 libro_fuente_1 = load_workbook(ruta_archivo_fuente_1)
 # Leer archivo fuente 2
 libro_fuente_2 = load_workbook(ruta_archivo_fuente_2)
-
 # Modificar archivo fuente
 hoja_fuente_1 = libro_fuente_1.active
 # Modificar archivo fuente
 hoja_fuente_2 = libro_fuente_2.active 
-
 #Contador para el número de filas llenas
 filas_llenas = 0
 #Iteración sobre las y conteo de las filas llenas
@@ -33,9 +31,9 @@ print("Desde el número 2 hasta el número", filas_llenas)
 print()
 
 datos_encabezado = {"Proyecto":["D9","I7",""],"Centro_costos":["D10","I9",""],"Numero_solicitud":["G4","H3",""],"Plan_muestreo":["G4","I10",""],"Cliente":["D7","C7",""],"NIT_CC":["D8","C9",""],"Direccion":["D11","C10",""],"Contacto":["D12","C11",""],"Telefono":["D13","C13",""],"Correo":["D14","C14",""],"Responsable_1":["K2","I11",""],"Responsable_2":["L2","I12",""]}
-datos_parametros = {"Departamento":["H","A",""],"Municipio":["I","B",""],"Fecha":["M","F",""],"Hora":["N","G",""],"Codigo_punto":["O","E",""],"Nombre_fuente":["R","C",""]}
+datos_parametros = {"Departamento":["H","A",""],"Municipio":["I","B",""],"Nombre_fuente":["R","C",""],"Codigo_punto":["O","E",""],"Fecha":["M","F",""],"Hora":["N","G",""],"Hora_caudal":["BH","G",""]}
 datos_parametros_2 = {"pH":["AL","K",""],"Temperatura":["AM","K",""],"OD":["AP","K",""],"Conductividad_E":["AV","K",""],"Caudal":["BG","K",""]}
-
+datos_parametros_2_type = {"pH":"str","Temperatura":"str","OD":"str","Conductividad_E":"str","Caudal":"str"}
 nombre = "\Informe_llenado"
 
 # Crear copia del archivo original
@@ -69,6 +67,7 @@ for dato in range(len(datos_encabezado)):
 
 a = 19
 b = 19
+c = 23
 
 for fila in range(2,7):
     
@@ -78,18 +77,31 @@ for fila in range(2,7):
         celda_2 = datos_parametros[key][0]+str(fila)
         valor = hoja_fuente_1[celda_2].value
         datos_parametros[key][2] = valor
-        hoja_modificada[datos_parametros[key][1] + str(a)] = valor
+
+        if key == "Hora_caudal":
+            hoja_modificada[datos_parametros[key][1] + str(c)] = valor    
+        else:
+            hoja_modificada[datos_parametros[key][1] + str(a)] = valor
 
     for dato in range(len(datos_parametros_2)):
             
         key = lista_keys_3[dato]
         celda_3 = datos_parametros_2[key][0]+str(fila)
         valor = hoja_fuente_1[celda_3].value
+
+        if datos_parametros_2_type[key] == "str":
+            try:
+                valor = float(valor)
+                valor = format(valor, ',').replace('.', ',')
+            except:
+                valor = ""
+
         datos_parametros_2[key][2] = valor
         hoja_modificada[datos_parametros_2[key][1] + str(b)] = valor
 
         b = b + 1
     a = a + 5
+    c = c + 5
 
 ruta_ultima = ruta_formato_modificado+nombre+".xlsx"            
 libro_modificado.save(ruta_ultima)
@@ -121,6 +133,7 @@ if 6 < filas_llenas:
 
     a = 19
     b = 19
+    c = 23
     
     for fila in range(7,12):
 
@@ -130,18 +143,31 @@ if 6 < filas_llenas:
             celda_2 = datos_parametros[key][0]+str(fila)
             valor = hoja_fuente_1[celda_2].value
             datos_parametros[key][2] = valor
-            hoja_modificada_2[datos_parametros[key][1] + str(a)] = valor
+
+            if key == "Hora_caudal":
+                hoja_modificada_2[datos_parametros[key][1] + str(c)] = valor    
+            else:
+                hoja_modificada_2[datos_parametros[key][1] + str(a)] = valor
 
         for dato in range(len(datos_parametros_2)):
         
             key = lista_keys_3[dato]
             celda_3 = datos_parametros_2[key][0]+str(fila)
             valor = hoja_fuente_1[celda_3].value
+
+            if datos_parametros_2_type[key] == "str":
+                try:
+                    valor = float(valor)
+                    valor = format(valor, ',').replace('.', ',')
+                except:
+                    valor = ""
+
             datos_parametros_2[key][2] = valor
             hoja_modificada_2[datos_parametros_2[key][1] + str(b)] = valor
 
             b = b + 1
         a = a + 5
+        c = c + 5 
 
     ruta_ultima_2 = ruta_formato_modificado+nombre+".xlsx"            
     libro_modificado_2.save(ruta_ultima_2)
@@ -173,6 +199,7 @@ if 11 < filas_llenas:
 
     a = 19
     b = 19
+    c = 23
     
     for fila in range(12,17):
 
@@ -182,18 +209,31 @@ if 11 < filas_llenas:
             celda_2 = datos_parametros[key][0]+str(fila)
             valor = hoja_fuente_1[celda_2].value
             datos_parametros[key][2] = valor
-            hoja_modificada_3[datos_parametros[key][1] + str(a)] = valor
+
+            if key == "Hora_caudal":
+                hoja_modificada_3[datos_parametros[key][1] + str(c)] = valor    
+            else:
+                hoja_modificada_3[datos_parametros[key][1] + str(a)] = valor
 
         for dato in range(len(datos_parametros_2)):
         
             key = lista_keys_3[dato]
             celda_3 = datos_parametros_2[key][0]+str(fila)
             valor = hoja_fuente_1[celda_3].value
+
+            if datos_parametros_2_type[key] == "str":
+                try:
+                    valor = float(valor)
+                    valor = format(valor, ',').replace('.', ',')
+                except:
+                    valor = ""
+
             datos_parametros_2[key][2] = valor
             hoja_modificada_3[datos_parametros_2[key][1] + str(b)] = valor
 
             b = b + 1
         a = a + 5
+        c = c + 5
 
     ruta_ultima_3 = ruta_formato_modificado+nombre+".xlsx"            
     libro_modificado_3.save(ruta_ultima_3)
@@ -225,6 +265,7 @@ if 16 < filas_llenas:
 
     a = 19
     b = 19
+    c = 23
     
     for fila in range(17,22):
 
@@ -234,18 +275,31 @@ if 16 < filas_llenas:
             celda_2 = datos_parametros[key][0]+str(fila)
             valor = hoja_fuente_1[celda_2].value
             datos_parametros[key][2] = valor
-            hoja_modificada_4[datos_parametros[key][1] + str(a)] = valor
+
+            if key == "Hora_caudal":
+                hoja_modificada_4[datos_parametros[key][1] + str(c)] = valor    
+            else:
+                hoja_modificada_4[datos_parametros[key][1] + str(a)] = valor
 
         for dato in range(len(datos_parametros_2)):
         
             key = lista_keys_3[dato]
             celda_3 = datos_parametros_2[key][0]+str(fila)
             valor = hoja_fuente_1[celda_3].value
+
+            if datos_parametros_2_type[key] == "str":
+                try:
+                    valor = float(valor)
+                    valor = format(valor, ',').replace('.', ',')
+                except:
+                    valor = ""
+
             datos_parametros_2[key][2] = valor
             hoja_modificada_4[datos_parametros_2[key][1] + str(b)] = valor
 
             b = b + 1
         a = a + 5
+        c = c + 5
 
     ruta_ultima_4 = ruta_formato_modificado+nombre+".xlsx"            
     libro_modificado_4.save(ruta_ultima_4)
